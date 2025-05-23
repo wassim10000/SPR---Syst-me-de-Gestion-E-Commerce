@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { TextField, Button, Box, Typography, Alert } from '@mui/material';
+import api from '../services/api';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -13,10 +13,12 @@ export default function Login() {
     e.preventDefault();
     setError('');
     try {
-      const res = await axios.post('http://localhost:8080/api/auth/login', { email, motDePasse });
+      const res = await api.post('/auth/login', { email, motDePasse });
       localStorage.setItem('token', res.data.token);
+      localStorage.setItem('user', JSON.stringify(res.data.user));
       navigate('/');
-    } catch {
+    } catch (error) {
+      console.error('Erreur de connexion:', error);
       setError('Email ou mot de passe incorrect');
     }
   };
