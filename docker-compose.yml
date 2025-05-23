@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  # Service de base de données PostgreSQL
+  db:
+    image: postgres:16-alpine
+    container_name: spr-db
+    environment:
+      POSTGRES_DB: sprdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Service backend Spring Boot
+  backend:
+    build: ./backend
+    container_name: spr-backend
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/sprdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      JWT_SECRET: ${JWT_SECRET:-defaultsecretkey123456789012345678901234}
+      JWT_EXPIRATION: 86400000
+    ports:
+      - "8080:8080"
+
+  # Service frontend React
+  frontend:
+    build: ./frontend
+    container_name: spr-frontend
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+
+volumes:
+  postgres_data:

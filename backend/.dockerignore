@@ -1,0 +1,13 @@
+target/
+!target/*.jar
+.git/
+.gitignore
+.idea/
+*.iml
+*.iws
+*.ipr
+.settings/
+.classpath
+.project
+.vscode/
+*.log
