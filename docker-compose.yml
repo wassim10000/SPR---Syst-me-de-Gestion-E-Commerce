@@ -34,7 +34,7 @@ services:
       JWT_SECRET: ${JWT_SECRET:-defaultsecretkey123456789012345678901234}
       JWT_EXPIRATION: 86400000
     ports:
-      - "8081:8080"
+      - "8080:8080"
 
   # Service frontend React
   frontend:

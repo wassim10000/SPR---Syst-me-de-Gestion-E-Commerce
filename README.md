@@ -159,7 +159,7 @@ Cette commande va:
 ### Accès à l'application déployée
 
 - **Frontend**: http://localhost
-- **Backend API**: http://localhost:8081/api
+- **Backend API**: http://localhost:8080/api
 - **Base de données**: localhost:5432 (accessible avec les outils de base de données)
 
 ### Variables d'environnement
