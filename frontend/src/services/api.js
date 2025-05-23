@@ -1,10 +1,12 @@
 import axios from 'axios';
 
+// Déterminer l'URL de base en fonction de l'environnement
+const isDevelopment = window.location.port === '5173';
+const baseURL = isDevelopment ? 'http://localhost:8080/api' : '/api';
+
 // Créer une instance Axios avec une configuration de base
 const api = axios.create({
-  // En production avec Docker, utilisez un chemin relatif pour que les requêtes
-  // soient gérées par le proxy Nginx
-  baseURL: '/api',
+  baseURL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
